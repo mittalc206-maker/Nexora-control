@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<meta name="description" content="NEXORA CONTROL business operations dashboard">
+<link rel="manifest" href="manifest.webmanifest">
+<title>NEXORA CONTROL</title>
+<style>
+:root{--bg:#0b1220;--panel:#121d30;--panel2:#17243a;--line:#263650;--text:#edf3ff;--muted:#91a2bd;--blue:#6d9cff;--green:#35c99a;--red:#ff7884}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}
+aside{background:#0e192a;border-right:1px solid var(--line);padding:22px 14px;display:flex;flex-direction:column;gap:22px}
+.brand{padding:4px 10px}.brand b{font-size:18px;letter-spacing:1.5px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;margin-top:4px}
+nav{display:grid;gap:6px}nav button{border:0;background:transparent;color:var(--muted);padding:12px;border-radius:10px;text-align:left}nav button.active,nav button:hover{background:#1b2b45;color:white}
+.side-note{margin-top:auto;border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--muted);font-size:12px;line-height:1.5}
+main{padding:26px;max-width:1400px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:25px}
+h1{font-size:25px;margin:0 0 5px}.sub{color:var(--muted)}.pill{border:1px solid var(--line);padding:7px 11px;border-radius:20px;color:#b9c9e3;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:17px}.metric small{color:var(--muted)}.metric strong{display:block;font-size:26px;margin-top:9px}.metric em{font-style:normal;color:var(--green);font-size:11px}
+.section{margin-top:20px}.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.section h2{font-size:16px;margin:0}
+.btn{background:var(--blue);color:#081326;border:0;border-radius:9px;padding:10px 14px;font-weight:700}.btn.secondary{background:#22334e;color:var(--text);border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:500;font-size:12px}td{font-size:13px}.empty{color:var(--muted);text-align:center;padding:25px}
+.page{display:none}.page.active{display:block}.formrow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.formrow input,.formrow select{background:#0c1728;border:1px solid var(--line);border-radius:8px;padding:10px;color:var(--text);min-width:130px;flex:1}
+.notice{color:var(--muted);font-size:12px;line-height:1.6;margin-top:14px}.danger{color:var(--red)}.tag{color:var(--green);font-size:11px}
+@media(max-width:760px){.app{display:block}aside{padding:12px;border-right:0;border-bottom:1px solid var(--line)}.brand{padding:3px 7px}nav{display:flex;overflow:auto}nav button{white-space:nowrap;padding:9px 11px} .side-note{display:none}main{padding:18px 13px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.top{align-items:flex-start;flex-direction:column}h1{font-size:22px}table{min-width:540px}.tablewrap{overflow:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand"><b>NEXORA CONTROL</b><small>BUSINESS OPERATIONS</small></div>
+  <nav id="nav">
+    <button class="active" data-page="overview">▦ &nbsp; Overview</button>
+    <button data-page="customers">♙ &nbsp; Customers</button>
+    <button data-page="inventory">▤ &nbsp; Inventory</button>
+    <button data-page="sales">↗ &nbsp; Sales</button>
+    <button data-page="expenses">↘ &nbsp; Expenses</button>
+    <button data-page="reports">▥ &nbsp; Reports</button>
+    <button data-page="settings">⚙ &nbsp; Settings</button>
+  </nav>
+  <div class="side-note">MVP PREVIEW<br>Data is stored on this device only. Cloud sync and multi-user access are not enabled yet.</div>
+</aside>
+<main>
+  <div class="top"><div><h1 id="pageTitle">Overview</h1><div class="sub">Welcome to your business control center.</div></div><span class="pill">● Local demo workspace</span></div>
+  <section class="page active" id="overview">
+    <div class="grid">
+      <div class="card metric"><small>Total customers</small><strong id="mCustomers">0</strong><em>Saved on this device</em></div>
+      <div class="card metric"><small>Inventory items</small><strong id="mItems">0</strong><em>Current item records</em></div>
+      <div class="card metric"><small>Total sales</small><strong id="mSales">₹0</strong><em>Recorded sales</em></div>
+      <div class="card metric"><small>Total expenses</small><strong id="mExpenses">₹0</strong><em>Recorded expenses</em></div>
+    </div>
+    <div class="section card"><div class="section-head"><h2>Recent activity</h2><button class="btn secondary" onclick="showPage('sales')">Add a sale</button></div><div id="recent" class="empty">No activity yet. Add customers, inventory, sales or expenses to get started.</div></div>
+    <p class="notice">This is an early MVP prototype. Verify all figures before using them for business decisions. It does not yet calculate tax, accounting profit, or inventory valuation.</p>
+  </section>
+  <section class="page" id="customers">
+    <div class="card"><div class="section-head"><h2>Customer directory</h2></div><div class="formrow"><input id="cName" placeholder="Customer name"><input id="cPhone" placeholder="Phone / contact"><button class="btn" onclick="addCustomer()">Add customer</button></div><div class="tablewrap"><table><thead><tr><th>Name</th><th>Contact</th><th>Added</th></tr></thead><tbody id="customerRows"></tbody></table></div></div>
+  </section>
+  <section class="page" id="inventory">
+    <div class="card"><div class="section-head"><h2>Inventory register</h2></div><div class="formrow"><input id="iName" placeholder="Item / material"><input id="iQty" type="number" min="0" placeholder="Quantity"><input id="iUnit" placeholder="Unit (kg, pcs)"><button class="btn" onclick="addItem()">Add item</button></div><div class="tablewrap"><table><thead><tr><th>Item</th><th>Quantity</th><th>Unit</th></tr></thead><tbody id="inventoryRows"></tbody></table></div></div>
+  </section>
+  <section class="page" id="sales">
+    <div class="card"><div class="section-head"><h2>Sales register</h2></div><div class="formrow"><input id="sDesc" placeholder="Sale description"><input id="sAmount" type="number" min="0" placeholder="Amount (₹)"><button class="btn" onclick="addSale()">Record sale</button></div><div class="tablewrap"><table><thead><tr><th>Description</th><th>Amount</th><th>Date</th></tr></thead><tbody id="salesRows"></tbody></table></div></div>
+  </section>
+  <section class="page" id="expenses">
+    <div class="card"><div class="section-head"><h2>Expense register</h2></div><div class="formrow"><input id="eDesc" placeholder="Expense description"><input id="eAmount" type="number" min="0" placeholder="Amount (₹)"><button class="btn" onclick="addExpense()">Record expense</button></div><div class="tablewrap"><table><thead><tr><th>Description</th><th>Amount</th><th>Date</th></tr></thead><tbody id="expenseRows"></tbody></table></div></div>
+  </section>
+  <section class="page" id="reports">
+    <div class="card"><h2>Business snapshot</h2><p id="reportText" class="sub">Add records to see your snapshot.</p><button class="btn secondary" onclick="exportData()">Export data (JSON)</button></div>
+  </section>
+  <section class="page" id="settings">
+    <div class="card"><h2>Workspace settings</h2><p class="sub">NEXORA CONTROL MVP · Local workspace</p><button class="btn secondary" onclick="exportData()">Export backup</button> <button class="btn secondary" onclick="clearData()">Clear local demo data</button><p class="notice">Do not enter sensitive customer information in this prototype. There is no server-side authentication, encryption, or cloud backup at this stage.</p></div>
+  </section>
+</main>
+</div>
+<script>
+const keys={customers:'nx_customers',items:'nx_items',sales:'nx_sales',expenses:'nx_expenses'};
+const read=k=>JSON.parse(localStorage.getItem(keys[k])||'[]');
+const save=(k,v)=>localStorage.setItem(keys[k],JSON.stringify(v));
+const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===p));document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));document.getElementById('pageTitle').textContent=p[0].toUpperCase()+p.slice(1);render()}
+document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(b)showPage(b.dataset.page)});
+function addCustomer(){let n=cName.value.trim(),p=cPhone.value.trim();if(!n)return alert('Enter a customer name');let a=read('customers');a.unshift({name:n,phone:p,date:new Date().toLocaleDateString()});save('customers',a);cName.value=cPhone.value='';render()}
+function addItem(){let n=iName.value.trim(),q=Number(iQty.value),u=iUnit.value.trim();if(!n||!Number.isFinite(q)||q<0)return alert('Enter a valid item and quantity');let a=read('items');a.unshift({name:n,qty:q,unit:u||'units'});save('items',a);iName.value=iQty.value=iUnit.value='';render()}
+function addSale(){let d=sDesc.value.trim(),a=Number(sAmount.value);if(!d||!Number.isFinite(a)||a<=0)return alert('Enter a description and positive amount');let x=read('sales');x.unshift({desc:d,amount:a,date:new Date().toLocaleDateString()});save('sales',x);sDesc.value=sAmount.value='';render()}
+function addExpense(){let d=eDesc.value.trim(),a=Number(eAmount.value);if(!d||!Number.isFinite(a)||a<=0)return alert('Enter a description and positive amount');let x=read('expenses');x.unshift({desc:d,amount:a,date:new Date().toLocaleDateString()});save('expenses',x);eDesc.value=eAmount.value='';render()}
+function rows(id,arr,cols){document.getElementById(id).innerHTML=arr.length?arr.map(o=>'<tr>'+cols.map(c=>'<td>'+String(c(o)).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))+'</td>').join('')+'</tr>').join(''):'<tr><td colspan="3" class="empty">No records yet</td></tr>'}
+function render(){let c=read('customers'),i=read('items'),s=read('sales'),e=read('expenses');mCustomers.textContent=c.length;mItems.textContent=i.length;mSales.textContent=money(s.reduce((t,x)=>t+x.amount,0));mExpenses.textContent=money(e.reduce((t,x)=>t+x.amount,0));rows('customerRows',c,[x=>x.name,x=>x.phone,x=>x.date]);rows('inventoryRows',i,[x=>x.name,x=>x.qty,x=>x.unit]);rows('salesRows',s,[x=>x.desc,x=>money(x.amount),x=>x.date]);rows('expenseRows',e,[x=>x.desc,x=>money(x.amount),x=>x.date]);recent.innerHTML=[...s.slice(0,3).map(x=>'Sale: '+x.desc+' · '+money(x.amount)),...e.slice(0,3).map(x=>'Expense: '+x.desc+' · '+money(x.amount))].slice(0,5).join('<br>')||'No activity yet.';reportText.textContent=`${c.length} customers · ${i.length} inventory records · Sales ${money(s.reduce((t,x)=>t+x.amount,0))} · Expenses ${money(e.reduce((t,x)=>t+x.amount,0))}. These are simple recorded totals, not audited accounts.`}
+function exportData(){let data={customers:read('customers'),inventory:read('items'),sales:read('sales'),expenses:read('expenses'),exportedAt:new Date().toISOString()};let a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.href=u;a.download='nexora-backup.json';a.click();URL.revokeObjectURL(u)}
+function clearData(){if(confirm('Delete all NEXORA demo records stored on this device?')){Object.values(keys).forEach(k=>localStorage.removeItem(k));render()}}
+if('serviceWorker' in navigator && location.protocol!=='file:'){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
+render();
+</script>
+</body></html>
